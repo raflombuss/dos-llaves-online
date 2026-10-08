@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#11132b">
+  <meta name="description" content="Dos Llaves: un juego de puzles cooperativos online para dos personas.">
+  <title>Dos Llaves ✦ Aventura para dos</title>
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/styles.css">
+  <script type="module" src="/game.js"></script>
+</head>
+<body>
+  <div class="background-glow glow-one" aria-hidden="true"></div>
+  <div class="background-glow glow-two" aria-hidden="true"></div>
+  <div class="page">
+    <header class="brand-bar">
+      <a class="brand" href="/" aria-label="Dos Llaves, inicio">
+        <span class="brand-icon" aria-hidden="true">✦</span>
+        <span>dos<span class="brand-light">llaves</span><span class="brand-dot">.</span></span>
+      </a>
+      <span class="brand-badge"><span class="online-dot"></span> COOPERATIVO PARA 2</span>
+    </header>
+
+    <main id="landing" class="landing">
+      <div class="hero-copy">
+        <div class="eyebrow">UN PEQUEÑO JUEGO PARA DOS</div>
+        <h1>Dos mundos.<br><span>Una misma salida.</span></h1>
+        <p>Dos personajes, dos laberintos y una misión: ayudaros a encontrar el camino. Cada interruptor abre la puerta de la otra persona.</p>
+        <div class="feature-list" aria-label="Características">
+          <span>✧ 3 niveles</span>
+          <span>⌁ En tiempo real</span>
+          <span>♡ Sin instalar nada</span>
+        </div>
+        <div class="preview-scene" aria-hidden="true">
+          <div class="preview-track">
+            <span class="preview-character sun">☀</span>
+            <span class="preview-path">····</span>
+            <span class="preview-door">▥</span>
+            <span class="preview-path">····</span>
+            <span class="preview-character moon">☾</span>
+          </div>
+          <span class="preview-label">LA PUERTA SE ABRE ENTRE LOS DOS <span>↗</span></span>
+        </div>
+      </div>
+
+      <section class="join-card" aria-labelledby="entry-title">
+        <div class="mini-symbol">✳</div>
+        <h2 id="entry-title">Empieza vuestra aventura</h2>
+        <p class="small-muted">Uno crea la sala y comparte el enlace. El otro entra. Así de fácil.</p>
+        <label for="playerName" class="input-label">¿Cómo quieres llamarte?</label>
+        <input id="playerName" maxlength="20" placeholder="Tu nombre" autocomplete="nickname">
+        <button id="createButton" class="btn btn-primary" type="button">Crear una sala <span>↗</span></button>
+        <div class="divider-text">o únete a una que ya existe</div>
+        <label for="roomCode" class="input-label">Código de la sala</label>
+        <input id="roomCode" maxlength="6" placeholder="Ej. LUNA42" autocomplete="off" autocapitalize="characters" spellcheck="false">
+        <button id="joinButton" class="btn btn-outline" type="button">Entrar con un código <span>→</span></button>
+        <p id="landingError" class="error-message" role="alert" aria-live="polite"></p>
+        <p class="privacy-note">🔒 Sala privada · Máximo dos personas · No requiere cuenta</p>
+      </section>
+    </main>
+
+    <main id="game" class="game hidden">
+      <div class="game-topline">
+        <div>
+          <div class="eyebrow">VUESTRA AVENTURA</div>
+          <h1 id="levelTitle">El primer pacto</h1>
+          <p id="levelHint" class="game-subtitle">Encuentra el interruptor para ayudar a tu pareja.</p>
+        </div>
+        <div class="stage-badge"><span>NIVEL</span> <strong id="levelNumber">01 <small>/ 03</small></strong></div>
+      </div>
+
+      <div class="level-track" id="levelTrack" aria-label="Progreso de los niveles"><span></span><span></span><span></span></div>
+
+      <div id="waitingBanner" class="notice hidden" role="status">
+        <span class="notice-symbol">✉</span>
+        <div><strong>Tu sala está lista.</strong><p>Comparte el enlace para que se una tu pareja.</p></div>
+      </div>
+      <div id="disconnectedBanner" class="notice notice-warning hidden" role="status">
+        <span class="notice-symbol">☁</span>
+        <div><strong>Tu pareja no está conectada.</strong><p>La partida se guarda mientras vuelve a entrar.</p></div>
+      </div>
+      <div id="connectingBanner" class="notice notice-warning hidden" role="status">
+        <span class="notice-symbol">↻</span>
+        <div><strong>Reconectando con la sala...</strong><p>Comprobando la conexión con el servidor.</p></div>
+      </div>
+
+      <div class="game-layout">
+        <section class="board-card" aria-labelledby="boardHeading">
+          <div class="board-card-head">
+            <div class="avatar-pill"><span id="ownAvatar" class="avatar-mini sun">☀</span><div><strong id="boardHeading">Tu mundo</strong><small id="ownName">Sol</small></div></div>
+            <span id="exitLabel" class="subtle-pill">EN CAMINO</span>
+          </div>
+          <div id="board" class="board" role="group" aria-label="Laberinto: usa las flechas del teclado o los botones para moverte"></div>
+          <div class="board-legend">
+            <span><i class="legend-sample legend-switch"></i> Interruptor</span>
+            <span><i class="legend-sample legend-door"></i> Puerta</span>
+            <span><i class="legend-sample legend-exit"></i> Salida</span>
+            <span><i class="legend-sample legend-crystal"></i> Cristal</span>
+          </div>
+          <div class="controls-row">
+            <div><strong>Muévete</strong><span>Flechas, WASD o controles táctiles</span></div>
+            <div class="dpad" aria-label="Controles de movimiento">
+              <button data-direction="up" class="up" aria-label="Arriba">↑</button>
+              <button data-direction="left" class="left" aria-label="Izquierda">←</button>
+              <button data-direction="down" class="down" aria-label="Abajo">↓</button>
+              <button data-direction="right" class="right" aria-label="Derecha">→</button>
+            </div>
+          </div>
+          <div id="toast" class="toast" role="status" aria-live="polite"></div>
+        </section>
+
+        <aside class="side-column">
+          <section class="partner-card">
+            <div class="section-label">TU COMPAÑERO/A</div>
+            <div class="partner-identity">
+              <div id="peerAvatar" class="peer-avatar moon">☾</div>
+              <div><strong id="peerName">Esperando...</strong><span id="peerStatus">Todavía no ha entrado</span></div>
+              <span id="peerDot" class="peer-dot"></span>
+            </div>
+            <div class="section-label objective-label">MISIÓN ACTUAL</div>
+            <div class="objective"><span id="switchIcon" class="check-icon">○</span><div><strong>Activar tu interruptor</strong><p>Abre la puerta de tu pareja</p></div></div>
+            <div class="objective"><span id="doorIcon" class="check-icon">○</span><div><strong>Recibir su ayuda</strong><p>Tu pareja abre tu puerta</p></div></div>
+            <div id="crystalObjective" class="objective hidden"><span id="crystalIcon" class="check-icon">○</span><div><strong>Recoger el cristal</strong><p>Explora los caminos laterales</p></div></div>
+            <div class="objective"><span id="exitIcon" class="check-icon">○</span><div><strong>Llegar a la salida</strong><p>Los dos debéis alcanzar la meta</p></div></div>
+          </section>
+
+          <section class="share-card">
+            <div class="section-label">VUESTRA SALA PRIVADA</div>
+            <div class="share-line"><strong id="shareCode">------</strong><button id="copyLink" class="btn btn-small" type="button">Copiar enlace ↗</button></div>
+            <p id="shareHint" class="small-muted">Envía el enlace para jugar juntos desde dos dispositivos.</p>
+          </section>
+
+          <section class="chat-card">
+            <div class="chat-heading"><span>♡ &nbsp; Chat de equipo</span><span class="chat-live">EN DIRECTO</span></div>
+            <div id="chatMessages" class="chat-messages" role="log" aria-label="Mensajes" aria-live="polite"></div>
+            <form id="chatForm" class="chat-form">
+              <input id="chatInput" type="text" maxlength="160" placeholder="Escribe algo..." aria-label="Mensaje al compañero" autocomplete="off">
+              <button class="btn btn-send" type="submit" aria-label="Enviar mensaje">➤</button>
+            </form>
+          </section>
+        </aside>
+      </div>
+      <div class="game-footer"><span>✦ Un juego hecho para colaborar, no competir.</span><button id="restartButton" type="button">↻ Reiniciar aventura</button></div>
+    </main>
+    <footer class="site-footer">DOS LLAVES <span>✦</span> MEJOR JUNTOS</footer>
+  </div>
+
+  <div id="victory" class="victory-overlay hidden" role="dialog" aria-modal="true" aria-labelledby="victoryHeading">
+    <div class="victory-card"><div class="victory-symbol">♡</div><div class="eyebrow">AVENTURA COMPLETADA</div><h2 id="victoryHeading">¡Lo habéis conseguido!</h2><p>Dos laberintos, un equipo. Habéis encontrado todas las salidas juntos.</p><button id="playAgain" class="btn btn-primary" type="button">Volver a jugar <span>↗</span></button></div>
+  </div>
+</body>
+</html>

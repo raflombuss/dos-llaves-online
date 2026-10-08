@@ -1,0 +1,14 @@
+{
+  "name": "dos-llaves-online",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Juego cooperativo online de puzles para dos personas, sin dependencias externas.",
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "node --watch server.mjs",
+    "test": "node --test"
+  },
+  "engines": { "node": ">=20" },
+  "license": "MIT"
+}
